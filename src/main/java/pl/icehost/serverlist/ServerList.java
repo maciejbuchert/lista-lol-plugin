@@ -10,6 +10,8 @@ import com.sun.net.httpserver.HttpHandler;
 
 public final class ServerList extends JavaPlugin {
 
+    public final Nagroda nagroda = new Nagroda();
+
     public final Config config = new Config(this);
 
     @Override
@@ -29,14 +31,11 @@ public final class ServerList extends JavaPlugin {
             server.setExecutor(null);
             server.start();
             System.out.println("Server started on port 8000");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
     }
-
 }

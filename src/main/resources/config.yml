@@ -1,0 +1,13 @@
+nagroda:
+  item_1:
+    name: "Nagroda"
+    material: "DIAMOND"
+    lore:
+      - "test"
+      - "rtest2"
+  item_2:
+    name: "Nagroda"
+    material: "DIAMOND"
+    lore:
+      - "test"
+      - "rtest2"

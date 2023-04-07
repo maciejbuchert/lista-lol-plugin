@@ -1,6 +1,6 @@
 name: ServerList
 version: '${project.version}'
 main: pl.icehost.serverlist.ServerList
-api-version: 1.19
+api-version: 1.18
 load: STARTUP
 authors: [ rex89m ]
