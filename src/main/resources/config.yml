@@ -1,13 +1,15 @@
 nagroda:
   item_1:
-    name: "Nagroda"
+    wlaczone: true
+    nazwa: "Nagroda"
     material: "DIAMOND"
-    lore:
+    opis:
       - "test"
       - "rtest2"
   item_2:
-    name: "Nagroda"
+    wlaczone: true
+    nazwa: "Nagroda"
     material: "DIAMOND"
-    lore:
+    opis:
       - "test"
       - "rtest2"

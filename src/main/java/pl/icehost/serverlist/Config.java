@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 public class Config {
 
@@ -38,21 +39,24 @@ public class Config {
             return;
         }
         for (String var: configurationSection.getKeys(false)){
+            if (configurationSection.isSet(var+".wlaczone")){
+                if (!configurationSection.getBoolean(var+".wlaczone"))continue;
+            }
             ItemStack itemStack;
             if (configurationSection.isSet(var+".material")){
-                System.out.println(configurationSection.getString(var+".material"));
                 Material m = Material.getMaterial(configurationSection.getString(var+".material"));
+                System.out.println(m);
                 if (m==null)return;
                 itemStack = new ItemStack(m);
             }else return;
             ItemMeta itemMeta = itemStack.getItemMeta();
-            if (configurationSection.isSet(var+".name")){
-                System.out.println(configurationSection.getString(var+".name"));
-                itemMeta.setDisplayName(chatfix(configurationSection.getString(var+".name")));
+            if (configurationSection.isSet(var+".nazwa")){
+                System.out.println(configurationSection.getString(var+".nazwa"));
+                itemMeta.setDisplayName(chatfix(configurationSection.getString(var+".nazwa")));
             }
-            if (configurationSection.isSet(var+".lore")){
-                System.out.println(configurationSection.getStringList(var+".lore"));
-                List<String> stringList = configurationSection.getStringList(var + ".lore");
+            if (configurationSection.isSet(var+".opis")){
+                System.out.println(configurationSection.getStringList(var+".opis"));
+                List<String> stringList = configurationSection.getStringList(var + ".opis");
                 for (int i = 0; i < stringList.size(); i++) {
                     stringList.set(i, chatfix(stringList.get(i)));
                 }
