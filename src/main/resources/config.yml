@@ -1,13 +1,18 @@
 nagroda:
-  item_1:
-    wlaczone: true
+  token: "xVNAJtViESEqgQn3AFyXjTbY"
+  1-5:
+    - "Item_1:10"
+    - "Item_2:10"
+    - "/give %player% stone"
+
+items:
+  Item_1:
     nazwa: "Nagroda"
     material: "DIAMOND"
     opis:
       - "test"
       - "rtest2"
-  item_2:
-    wlaczone: true
+  Item_2:
     nazwa: "Nagroda"
     material: "DIAMOND"
     opis:

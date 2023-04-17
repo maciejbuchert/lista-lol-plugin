@@ -1,7 +1,9 @@
 package pl.icehost.serverlist;
 
+import org.bukkit.entity.Player;
+
 public interface Trigger {
 
-    void trigger(String username);
+    void trigger(Integer interval, Player player);
 
 }

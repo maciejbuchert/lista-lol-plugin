@@ -1,37 +1,75 @@
 package pl.icehost.serverlist;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Nagroda {
 
-    private final ArrayList<ItemStack> itemStacks = new ArrayList<>();
+    private final ConsoleCommandSender sender = Bukkit.getConsoleSender();
 
-    public ArrayList<ItemStack> getItemStacks() {
+    private final HashMap<String, ArrayList<ItemStack>> itemStacks = new HashMap<>();
+
+    private final HashMap<String, ArrayList<String>> commands = new HashMap<>();
+
+    public HashMap<String, ArrayList<ItemStack>> getItemStacks() {
         return itemStacks;
     }
 
-    public void addItemStack(ItemStack itemStack){
-        itemStacks.add(itemStack);
+    public HashMap<String, ArrayList<String>> getCommands() {
+        return commands;
     }
 
-    public boolean removeItemStack(ItemStack itemStack){
-        return itemStacks.remove(itemStack);
+
+    public void addItemStack(Integer min, Integer max,ItemStack itemStack){
+        ArrayList<ItemStack> orDefault = itemStacks.getOrDefault(min + "-" + max, new ArrayList<>());
+        orDefault.add(itemStack);
+        itemStacks.put(min + "-" + max, orDefault);
     }
 
-    public boolean give(Player player){
-        if (player.isOnline()){
-            for (ItemStack itemStack: itemStacks){
-                if (player.getInventory().firstEmpty()!=-1){
-                    player.getInventory().addItem(itemStack);
-                }else{
-                    player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+    public void addCommand(Integer min, Integer max,String command){
+        ArrayList<String> orDefault = commands.getOrDefault(min + "-" + max, new ArrayList<>());
+        orDefault.add(command);
+        commands.put(min + "-" + max, orDefault);
+    }
+
+    public void addCommand(HashMap<String, ArrayList<String>> command){
+        commands.putAll(command);
+    }
+    public void addItemStack(HashMap<String, ArrayList<ItemStack>> itemStack){
+        itemStacks.putAll(itemStack);
+    }
+
+    public void give(Integer interval, Player player){
+        if (player!=null) {
+            if (player.isOnline()) {
+                for (Map.Entry<String, ArrayList<String>> i : commands.entrySet()){
+                    String[] var = i.getKey().split("-");
+                    if (interval >= Integer.parseInt(var[0]) && interval <= Integer.parseInt(var[1])) {
+                        for (String i2 : i.getValue()) {
+                            Bukkit.dispatchCommand(sender, i2.replaceAll("%player%", player.getName()));
+                        }
+                    }
+                }
+                for (Map.Entry<String, ArrayList<ItemStack>> i : itemStacks.entrySet()){
+                    String[] var = i.getKey().split("-");
+                    if (interval >= Integer.parseInt(var[0]) && interval <= Integer.parseInt(var[1])) {
+                        for (ItemStack i2 : i.getValue()) {
+                            if (player.getInventory().firstEmpty() != -1) {
+                                player.getInventory().addItem(i2);
+                            } else {
+                                player.getWorld().dropItemNaturally(player.getLocation(), i2);
+                            }
+                        }
+                    }
                 }
             }
-            return true;
         }
-        return false;
     }
 }

@@ -4,3 +4,6 @@ main: pl.icehost.serverlist.ServerList
 api-version: 1.13
 load: STARTUP
 authors: [ rex89m ]
+commands:
+  nagroda:
+  test2:
