@@ -2,7 +2,7 @@ package pl.icehost.serverlist.Api;
 
 import pl.icehost.serverlist.Nagroda;
 import pl.icehost.serverlist.ServerList;
-import pl.icehost.serverlist.Trigger;
+import pl.icehost.serverlist.Interface.Trigger;
 
 import java.util.ArrayList;
 

@@ -4,6 +4,10 @@ nagroda:
     - "Item_1:10"
     - "Item_2:10"
     - "/give %player% stone"
+  6-10:
+    - "Item_1:20"
+    - "Item_2:30"
+    - "/give %player% dirt"
 
 items:
   Item_1:
@@ -13,7 +17,7 @@ items:
       - "test"
       - "rtest2"
   Item_2:
-    nazwa: "Nagroda"
+    nazwa: "Nagroda 2"
     material: "DIAMOND"
     opis:
       - "test"
