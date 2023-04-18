@@ -60,6 +60,7 @@ public class Nagroda {
                 for (Map.Entry<String, ArrayList<ItemStack>> i : itemStacks.entrySet()){
                     String[] var = i.getKey().split("-");
                     if (interval >= Integer.parseInt(var[0]) && interval <= Integer.parseInt(var[1])) {
+                        System.out.println();
                         for (ItemStack i2 : i.getValue()) {
                             if (player.getInventory().firstEmpty() != -1) {
                                 player.getInventory().addItem(i2);

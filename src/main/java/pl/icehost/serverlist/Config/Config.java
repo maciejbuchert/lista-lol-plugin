@@ -1,4 +1,4 @@
-package pl.icehost.serverlist;
+package pl.icehost.serverlist.Config;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.icehost.serverlist.ServerList;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,17 +20,13 @@ public class Config {
 
     private final File file;
 
-    private final File players;
-
     private FileConfiguration playersConfig;
 
     public Config(ServerList plugin) {
         this.plugin = plugin;
         plugin.saveResource("config.yml", false);
-        plugin.saveResource("players.yml", false);
 
         file=new File("plugins/ServerList/config.yml");
-        players=new File("plugins/ServerList/players.yml");
         load();
     }
 
@@ -38,8 +35,6 @@ public class Config {
     public void load() {
         System.out.println("----------------");
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-        playersConfig = YamlConfiguration.loadConfiguration(players);
-        plugin.addOfflinePlayer(playersConfig.getStringList("players"));
         ConfigurationSection section = null;
         ConfigurationSection items = null;
         if (config.isConfigurationSection("nagroda")) {
@@ -125,9 +120,5 @@ public class Config {
 
     private String chatfix(String var){
         return ChatColor.translateAlternateColorCodes('&', var);
-    }
-
-    void savePlayers(){
-        playersConfig.set("players", plugin.getOfflinePlayers());
     }
 }

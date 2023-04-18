@@ -4,24 +4,21 @@ import com.squareup.okhttp.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import pl.icehost.serverlist.Api.Api;
 import pl.icehost.serverlist.Command.NagrodaCommand;
+import pl.icehost.serverlist.Config.Config;
+import pl.icehost.serverlist.Interface.Trigger;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public final class ServerList extends JavaPlugin {
 
@@ -48,6 +45,7 @@ public final class ServerList extends JavaPlugin {
     public final Config config = new Config(this);
 
     private PrintWriter out;
+
     private BufferedReader in;
 
     public ArrayList<String> getOfflinePlayers() {
@@ -62,9 +60,16 @@ public final class ServerList extends JavaPlugin {
                 .url("https://codebit.pl/api/v1/game_servers/minecraft/get/prizes")
                 .addHeader("Authorization", "Bearer "+config.gettoken())
                 .build();
-        Timer time = new Timer(10000, new ActionListener() {
+        api.addTrigger(new Trigger() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void trigger(Integer interval, Player player) {
+                System.out.println(interval+"  "+player.getName());
+                nagroda.give(interval, player);
+            }
+        });
+        new BukkitRunnable() {
+            @Override
+            public void run() {
                 try {
                     Response response = client.newCall(request).execute();
                     JSONArray obj = (JSONArray) new JSONParser().parse(response.body().string());
@@ -74,10 +79,10 @@ public final class ServerList extends JavaPlugin {
                         Player player = Bukkit.getPlayer(jsonObject.get("player_nickname").toString());
                         if (player != null) {
                             if (player.isOnline()) {
-                                send(jsonObject.get("transaction_hash").toString());
                                 for (Trigger var : api.getTriggers()) {
                                     var.trigger(Integer.parseInt(jsonObject.get("days").toString()), player);
                                 }
+                                send(jsonObject.get("transaction_hash").toString());
                             }
                         }
                     }
@@ -85,20 +90,12 @@ public final class ServerList extends JavaPlugin {
                     ioException.printStackTrace();
                 }
             }
-        });
-        api.addTrigger(new Trigger() {
-            @Override
-            public void trigger(Integer interval, Player player) {
-                System.out.println(interval+"  "+player.getName());
-                nagroda.give(interval, player);
-            }
-        });
+        }.runTaskTimer(this, 20, 200);
         getCommand("nagroda").setExecutor(nagrodaCommand);
     }
 
     @Override
     public void onDisable() {
-        config.savePlayers();
     }
 
     private void send(String key){
