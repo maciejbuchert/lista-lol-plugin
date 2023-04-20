@@ -31,6 +31,7 @@ public class Config {
     private String token = null;
 
     public void load() {
+        Reward.clear();
         System.out.println("----------------");
         FileConfiguration nagrodaconfig = YamlConfiguration.loadConfiguration(file);
         ConfigurationSection section = null;
@@ -59,17 +60,14 @@ public class Config {
             ItemStack itemStack;
             if (items.isSet(var + ".material")) {
                 Material m = Material.getMaterial(items.getString(var + ".material"));
-                System.out.println(m);
                 if (m == null) return;
                 itemStack = new ItemStack(m);
             } else return;
             ItemMeta itemMeta = itemStack.getItemMeta();
             if (items.isSet(var + ".nazwa")) {
-                System.out.println(items.getString(var + ".nazwa"));
                 itemMeta.setDisplayName(chatfix(items.getString(var + ".nazwa")));
             }
             if (items.isSet(var + ".opis")) {
-                System.out.println(items.getStringList(var + ".opis"));
                 List<String> stringList = items.getStringList(var + ".opis");
                 for (int i = 0; i < stringList.size(); i++) {
                     stringList.set(i, chatfix(stringList.get(i)));
@@ -83,7 +81,11 @@ public class Config {
             String[] internal = var.split("-");
             Reward reward;
             if (internal.length==1){
-                reward = new Reward(Integer.parseInt(internal[0]), -1);
+                if (internal[0].endsWith("+")){
+                    reward = new Reward(Integer.parseInt(internal[0].replaceAll("\\+","")), -1);
+                }else {
+                    reward = new Reward(Integer.parseInt(internal[0]), null);
+                }
             }else{
                 reward = new Reward(Integer.parseInt(internal[0]), Integer.parseInt(internal[1]));
             }
@@ -97,7 +99,7 @@ public class Config {
                 }
                 String[] s = var2.split(":");
                 if (itemMap.containsKey(s[0])){
-                    ItemStack is = itemMap.get(s[0]);
+                    ItemStack is = itemMap.get(s[0]).clone();
                     if (s.length!=1) {
                         try {
                             is.setAmount(Integer.parseInt(s[1]));

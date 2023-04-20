@@ -23,6 +23,10 @@ public class Reward {
         return list;
     }
 
+    public static void clear(){
+        list.clear();
+    }
+
     public Reward(Integer min, Integer max) {
         this.min = min;
         this.max = max;
@@ -69,11 +73,11 @@ public class Reward {
         }else return min <= var && var <= max;
     }
 
-    public int getMin() {
+    public Integer getMin() {
         return min;
     }
 
-    public int getMax() {
+    public Integer getMax() {
         return max;
     }
 

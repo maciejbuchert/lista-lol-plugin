@@ -6,9 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.icehost.serverlist.Dane.Reward;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 public class Nagroda {
 
     private final ConsoleCommandSender sender = Bukkit.getConsoleSender();
@@ -18,6 +15,8 @@ public class Nagroda {
             if (player.isOnline()) {
                 for (Reward i : Reward.get()) {
                     if (i.interval(interval)) {
+                        System.out.println("Min: "+i.getMin());
+                        System.out.println("max: "+i.getMax());
                         for (ItemStack itemStack : i.getItems()) {
                             if (player.getInventory().firstEmpty() != -1) {
                                 player.getInventory().addItem(itemStack);

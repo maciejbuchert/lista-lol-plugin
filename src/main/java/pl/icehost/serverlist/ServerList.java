@@ -73,7 +73,6 @@ public final class ServerList extends JavaPlugin {
                     JSONArray obj = (JSONArray) new JSONParser().parse(response.body().string());
                     for (Object var2 : obj) {
                         JSONObject jsonObject = (JSONObject) var2;
-                        System.out.println(jsonObject.get("player_nickname").toString());
                         Player player = Bukkit.getPlayer(jsonObject.get("player_nickname").toString());
                         if (player != null) {
                             if (player.isOnline()) {
@@ -112,7 +111,6 @@ public final class ServerList extends JavaPlugin {
             if (response.code()==404){
                 System.out.println("Błąd nie znaleziono transaction_hash: "+key);
             }
-            System.out.println(response.body().string());
             // 404 not found
         } catch (IOException e) {
             e.printStackTrace();

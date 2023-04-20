@@ -10,7 +10,14 @@ nagroda:
     - "Item_1:20"
     - "Item_2:30"
     - "/give %player% dirt"
-    - "message:"
+    - "message:Odeb"
+  11:
+    - "Item_1:99"
+    - "Item_2:60"
+    - "/give %player% diamond"
+    - "message:&4&lgz"
+  1+:
+    - "message:&8Dostales nagrode"
 
 items:
   Item_1:

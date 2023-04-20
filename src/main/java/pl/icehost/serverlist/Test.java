@@ -46,10 +46,9 @@ public class Test {
 
 */
 
-            if (false) {
                 OkHttpClient client = new OkHttpClient();
                 MediaType mediaType = MediaType.parse("application/json");
-                RequestBody body = RequestBody.create(mediaType, "{\n    \"method\": \"cashbill\",\n    \"customer_email\": \"maciejbuchert1@gmail.com\",\n    \"action\": \"games_server\",\n    \"currency\": \"PLN\",\n    \"action_data\": {\n        \"server_id\": 10,\n        \"days\": 8,\n        \"player_nickname\": \"rex89m\"\n    },\n    \"amount\": 6,\n    \"return_url\": \"http://codebit.pl/payments\"\n}");
+                RequestBody body = RequestBody.create(mediaType, "{\n    \"method\": \"cashbill\",\n    \"customer_email\": \"maciejbuchert1@gmail.com\",\n    \"action\": \"games_server\",\n    \"currency\": \"PLN\",\n    \"action_data\": {\n        \"server_id\": 10,\n        \"days\": 11,\n        \"player_nickname\": \"rex89m\"\n    },\n    \"amount\": 6,\n    \"return_url\": \"http://codebit.pl/payments\"\n}");
                 Request request = new Request.Builder()
                         .url("https://codebit.pl/api/v1/payment")
                         .method("POST", body)
@@ -57,7 +56,6 @@ public class Test {
                         .build();
                 Response response = client.newCall(request).execute();
                 System.out.println(response.body().string());
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
