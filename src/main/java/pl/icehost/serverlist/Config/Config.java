@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.icehost.serverlist.Dane.Reward;
 import pl.icehost.serverlist.ServerList;
 
 import java.io.File;
@@ -20,12 +21,9 @@ public class Config {
 
     private final File file;
 
-    private FileConfiguration playersConfig;
-
     public Config(ServerList plugin) {
         this.plugin = plugin;
         plugin.saveResource("config.yml", false);
-
         file=new File("plugins/ServerList/config.yml");
         load();
     }
@@ -34,25 +32,28 @@ public class Config {
 
     public void load() {
         System.out.println("----------------");
-        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+        FileConfiguration nagrodaconfig = YamlConfiguration.loadConfiguration(file);
         ConfigurationSection section = null;
         ConfigurationSection items = null;
-        if (config.isConfigurationSection("nagroda")) {
-            section = config.getConfigurationSection("nagroda");
+        if (nagrodaconfig.isConfigurationSection("nagroda")) {
+            section = nagrodaconfig.getConfigurationSection("nagroda");
         } else {
             System.out.println("błąd");
         }
-        if (config.isConfigurationSection("items")) {
-            items = config.getConfigurationSection("items");
+        if (nagrodaconfig.isConfigurationSection("items")) {
+            items = nagrodaconfig.getConfigurationSection("items");
         } else {
             System.out.println("błąd");
         }
-        if (items == null || section == null) {
+        if (nagrodaconfig.isConfigurationSection("config")) {
+            token = nagrodaconfig.getConfigurationSection("config").getString("token");
+        } else {
+            System.out.println("błąd");
+        }
+        if (items == null || section == null || token == null) {
             System.out.println("błąd");
             return;
         }
-        HashMap<String, ArrayList<ItemStack>> itemsAdd = new HashMap<>();
-        HashMap<String, ArrayList<String >> commandAdd = new HashMap<>();
         HashMap<String, ItemStack> itemMap = new HashMap<>();
         for (String var: items.getKeys(false)){
             ItemStack itemStack;
@@ -79,15 +80,19 @@ public class Config {
             itemMap.put(var, itemStack);
         }
         for (String var : section.getKeys(false)) {
-            if (var.equals("token")){
-                token=section.getString(var);
-                continue;
-             }
-            ArrayList<ItemStack> itemStacks = new ArrayList<>();
-            ArrayList<String> commands = new ArrayList<>();
+            String[] internal = var.split("-");
+            Reward reward;
+            if (internal.length==1){
+                reward = new Reward(Integer.parseInt(internal[0]), -1);
+            }else{
+                reward = new Reward(Integer.parseInt(internal[0]), Integer.parseInt(internal[1]));
+            }
             for (String var2 : section.getStringList(var)){
                 if (var2.startsWith("/")){
-                    commands.add(var2.substring(1));
+                    reward.addCommand(var2.substring(1));
+                    continue;
+                }else if (var2.startsWith("message:")){
+                    reward.addMessage(chatfix(var2.substring(8)));
                     continue;
                 }
                 String[] s = var2.split(":");
@@ -102,16 +107,12 @@ public class Config {
                     }else{
                         is.setAmount(1);
                     }
-                    itemStacks.add(is);
+                    reward.addItem(is);
                 }else{
                     System.out.println("Brak itemku o tym ID: "+s[0]);
                 }
             }
-            itemsAdd.put(var, itemStacks);
-            commandAdd.put(var, commands);
         }
-        plugin.nagroda.addCommand(commandAdd);
-        plugin.nagroda.addItemStack(itemsAdd);
     }
 
     public String gettoken(){
