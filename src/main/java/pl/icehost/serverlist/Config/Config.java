@@ -17,12 +17,9 @@ import java.util.List;
 
 public class Config {
 
-    private final ServerList plugin;
-
     private final File file;
 
     public Config(ServerList plugin) {
-        this.plugin = plugin;
         plugin.saveResource("config.yml", false);
         file=new File("plugins/ServerList/config.yml");
         load();

@@ -15,8 +15,6 @@ import pl.icehost.serverlist.Config.Config;
 import pl.icehost.serverlist.Interface.Trigger;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class ServerList extends JavaPlugin {
 
@@ -34,21 +32,8 @@ public final class ServerList extends JavaPlugin {
         return api;
     }
 
-    private final ArrayList<String> offlinePlayers = new ArrayList<>();
-
-    public void addOfflinePlayer(List<String> players){
-        offlinePlayers.addAll(players);
-    }
-
     public final Config config = new Config(this);
 
-    private PrintWriter out;
-
-    private BufferedReader in;
-
-    public ArrayList<String> getOfflinePlayers() {
-        return offlinePlayers;
-    }
 
     @Override
     public void onEnable() {
@@ -69,7 +54,10 @@ public final class ServerList extends JavaPlugin {
             public void run() {
                 try {
                     Response response = client.newCall(request).execute();
-                    if (response.code()==401)return;
+                    if (response.code()==401) {
+                        System.out.println("Nie znaleziono tokenu w bazie");
+                        return;
+                    }
                     JSONArray obj = (JSONArray) new JSONParser().parse(response.body().string());
                     for (Object var2 : obj) {
                         JSONObject jsonObject = (JSONObject) var2;
