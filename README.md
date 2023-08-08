@@ -1,11 +1,11 @@
 # Plugin lista.lol
 Plugin został stworzony w celu wynagradzania wspierających wasze serwery graczy na serwisie lista.lol!
-Plugin oferujem możliwość dynamicznego dostosowywania nagród w zależności od długości wykupionego okresu przez gracza.
+Plugin oferuje możliwość dynamicznego dostosowywania nagród w zależności od długości wykupionego okresu przez gracza.
 Dzięki elastycznej konfiguracji masz pełną kontrolę nad kształtowaniem gratyfikacji, które są udzielane na serwerze.
 Nasz kod jest w pełni otwarty i wolny od wirusów.
 
 # Pierwsze kroki
-1. Skontaktuj się z nami w celu uzyskania klucza API. Najlepiej napisać do nas maila z domeny serwera na adres api@codebit.pl
+1. Skontaktuj się z nami w celu uzyskania klucza API. Najlepiej napisać do nas maila na adres api@codebit.pl
 2. Zainstaluj i skonfiguruj plugin. [Instrukcja poniżej](https://github.com/maciejbuchert/lista-lol-plugin/#instalacja-pluginu)
 
 # Instalacja pluginu
@@ -60,7 +60,7 @@ rewards:
 ```
 
 # Kontrybuuj
-Zachęcamy do rozwouj pluginu. W zakładce Issues można zgłaszać błędy oraz nowe funkcje
+Zachęcamy do rozwoju pluginu. W zakładce Issues można zgłaszać błędy oraz nowe funkcje!
 
 # Autor
 Dziękujemy @rex89m za utworzenie pluginu
